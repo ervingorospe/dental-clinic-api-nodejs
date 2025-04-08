@@ -52,6 +52,8 @@ jobs:
 
     env:
       NAMESPACE: dental-clinic-app
+      EKS_CLUSTER_NAME: dental-clinic-cluster
+      AWS_REGION: ap-southeast-2
 
     steps:
       - name: Checkout repository
@@ -74,7 +76,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Update Kubeconfig
-        run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
       - name: Update Deployment YAML with New Image
         run: |
