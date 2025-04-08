@@ -1,0 +1,47 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+.DS_Store
+
+# Build Artifacts
+dist/
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+*.env
+*.env.*
+
+# Log files
+*.log
+
+# Docker (don't ignore Dockerfile, but ignore build context or local files if necessary)
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Kubernetes (only ignore environment-specific files)
+# Ignore local or environment-specific deployment/service files
+deployment.local.yml
+service.local.yml
+*.local.yml
+jwt-secret.yml
+
+# OS-specific files
+Thumbs.db
+Desktop.ini
+
+# IDE/editor-specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.iml
+
+# Temporary files
+*.swp
+*~

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dental-clinic-api
+  name: dental-clinic-api
+  namespace: dental-clinic-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dental-clinic-api
+  template:
+    metadata:
+      labels:
+        app: dental-clinic-api
+    spec:
+      containers:
+        - name: dental-clinic-api
+          image: 412631849473.dkr.ecr.ap-southeast-2.amazonaws.com/dental-clinic-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: NODE_ENV
+              value: "development"
+            - name: PORT
+              value: "8000"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JWT_SECRET
+            - name: REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: REFRESH_SECRET
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dental-clinic-api
+  name: dental-clinic-api
+  namespace: dental-clinic-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: dental-clinic-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
