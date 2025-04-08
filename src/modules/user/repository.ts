@@ -2,7 +2,7 @@ import { IUser } from '@modules/user/interface';
 
 export class UserRepository {
   static test() {
-    return 'testing lang';
+    return 'Welcome Ervin Gorospe';
   }
 
   static async create(userData: IUser) {
