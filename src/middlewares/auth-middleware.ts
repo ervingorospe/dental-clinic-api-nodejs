@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { ENV } from '@config/env';
-import { IUserDTO } from '@modules/user/interface';
+import UserDTO from '@modules/user/dto/user';
 
 interface AuthRequest extends Request {
-  user?: IUserDTO;
+  user?: UserDTO;
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction): void => {
@@ -16,7 +16,7 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   }
 
   try {
-    const decoded = jwt.verify(token, ENV.JWT_SECRET) as IUserDTO;
+    const decoded = jwt.verify(token, ENV.JWT_SECRET) as UserDTO;
     req.user = decoded;
     next();
   } catch (error) {

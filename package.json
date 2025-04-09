@@ -13,7 +13,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ext ts --exec ts-node src/server.ts",
     "build": "tsc",
-    "start": "node -r module-alias/register dist/server.js"
+    "start": "node -r module-alias/register dist/server.js",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "generate": "npx prisma generate",
+    "reset": "npx prisma migrate reset",
+    "generate:client": "npx prisma generate"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils",
@@ -22,12 +27,14 @@
     "@config": "./dist/config"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "api-dental-clinic": "file:",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "module-alias": "^2.2.3"
+    "module-alias": "^2.2.3",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -35,6 +42,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.14.0",
     "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"

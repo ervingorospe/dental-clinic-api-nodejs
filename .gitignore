@@ -23,6 +23,7 @@ dist/
 .docker/
 docker-compose.override.yml
 docker-compose.local.yml
+docker-compose.yml
 
 # Kubernetes (only ignore environment-specific files)
 # Ignore local or environment-specific deployment/service files

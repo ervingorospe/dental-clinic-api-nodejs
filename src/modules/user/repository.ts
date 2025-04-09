@@ -1,11 +1,6 @@
-import { IUser } from '@modules/user/interface';
+import { PrismaClient } from '@prisma/client';
 
-export class UserRepository {
-  static test() {
-    return 'Welcome Ervin Gorospe';
-  }
+const prisma = new PrismaClient();
 
-  static async create(userData: IUser) {
-    // return await UserModel.create(userData);
-  }
-}
+export const Users = prisma.users;
+export const UserDetails = prisma.userDetails;

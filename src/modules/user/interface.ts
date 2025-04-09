@@ -1,20 +1,19 @@
-export interface IUser {
-  _id?: string;
+export interface IUserDetails {
+  id?: number;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-  active: boolean;
-  role: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  phoneNumber: string;
+  birthDate: Date;
 }
 
-export  interface IUserDTO {
-  _id?: string;
-  firstName: string;
-  lastName: string;
+export interface IUser {
+  id?: number;
   email: string;
-  active: boolean;
+  password: string;
+  confirmPassword: string;
+  active?: boolean;
   role: string;
+  userDetails: IUserDetails;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -1,9 +1,8 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { ENV } from '@config/env';
-import { IUserDTO } from '@modules/user/interface'
 
-export const tokenGenerator = (user: IUserDTO, res: Response) => {
+export const tokenGenerator = (user: Record<string, string | boolean | number>, res: Response) => {
   const accessToken = jwt.sign(user, ENV.JWT_SECRET, { expiresIn: '15m' });
   const refreshToken = jwt.sign(user, ENV.REFRESH_SECRET, { expiresIn: '7d' });
 
