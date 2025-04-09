@@ -35,6 +35,11 @@ spec:
                 secretKeyRef:
                   name: jwt-secrets
                   key: REFRESH_SECRET
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: DATABASE_URL
 
 ---
 apiVersion: v1
