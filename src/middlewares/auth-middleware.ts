@@ -24,6 +24,18 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   }
 };
 
+export const checkOwnership = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const loggedInUserId = req.user?.id;
+  const id = parseInt(req.params.id, 10);
+
+  if (loggedInUserId === undefined || loggedInUserId !== id) {
+    res.status(403).json({ message: "Forbidden: You can only update your own account" });
+    return;
+  }
+
+  next();
+};
+
 // export const authorizeRole = (role: string) => {
 //   return (req: Request, res: Response, next: NextFunction) => {
 //     const user = req.user;

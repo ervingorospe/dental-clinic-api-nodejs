@@ -17,3 +17,14 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface IUserUpdate {
+  email: string,
+  userDetails: IUserDetails
+}
+
+
+export interface IUpdatePassword {
+  password: string;
+  confirmPassword: string;
+}
