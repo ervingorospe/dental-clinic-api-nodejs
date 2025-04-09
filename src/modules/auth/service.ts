@@ -1,3 +1,4 @@
+import { refreshToken } from './../../utils/jwt';
 import { Response } from "express";
 import bcrypt from "bcryptjs";
 import { tokenGenerator } from '@utils/jwt'
@@ -5,6 +6,7 @@ import { IUserLogin } from "@modules/auth/interface"
 import { Users } from "@modules/user/repository"
 import { AppError } from "@utils/app-error";
 import UserDTO from "@modules/user/dto/user"
+import { removeRefreshToken }  from "@utils/jwt"
 
 export class AuthService {
   static login = async (data: IUserLogin, res: Response) => {
@@ -35,6 +37,15 @@ export class AuthService {
     const plainUser = userDTO.toPlainObject();
 
     return tokenGenerator(plainUser, res);
+  }
+
+  static logout = (res: Response) => {
+    removeRefreshToken(res);
+    return "Logged out successfully";
+  }
+
+  static refreshToken = (token: string) => {
+    return refreshToken(token);
   }
 
   private static comparePassword = async (password: string, userPassword: string) => {

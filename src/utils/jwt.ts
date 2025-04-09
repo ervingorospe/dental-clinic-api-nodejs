@@ -1,6 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { ENV } from '@config/env';
+import { AppError } from "@utils/app-error";
 
 export const tokenGenerator = (user: Record<string, string | boolean | number>, res: Response) => {
   const accessToken = jwt.sign(user, ENV.JWT_SECRET, { expiresIn: '15m' });
@@ -20,17 +21,23 @@ const storeRefreshToken = (res: Response, refreshToken: string) => {
   });
 }
 
-export const refreshToken = (req: Request, res: Response) => {
-  const token = req.body.refreshToken;
-
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+export const refreshToken = (token: string) => {
+  if (!token) throw new AppError("Unauthorized", 401);;
 
   try {
     const decoded = jwt.verify(token, ENV.REFRESH_SECRET) as JwtPayload;
     const accessToken = jwt.sign({ id: decoded.id }, ENV.JWT_SECRET, { expiresIn: '15m' });
 
-    res.json({ accessToken });
+    return { accessToken }
   } catch (error) {
-    res.status(403).json({ message: 'Invalid refresh token' });
+    throw new AppError("Invalid refresh token", 403);
   }
 };
+
+export const removeRefreshToken = (res: Response) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+}
