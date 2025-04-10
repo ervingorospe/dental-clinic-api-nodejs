@@ -7,13 +7,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { ENV } from "@config/env";
 
-// const corsOptions = {
-//   origin: ENV.CLIENT_PORT,
-//   credentials: true,
-// };
-
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ENV.CLIENT_PORT,
   credentials: true,
 };
 
