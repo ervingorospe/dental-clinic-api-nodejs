@@ -7,9 +7,14 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { ENV } from "@config/env";
 
+// const corsOptions = {
+//   origin: ENV.CLIENT_PORT,
+//   credentials: true,
+// };
+
 const corsOptions = {
-  origin: ENV.CLIENT_PORT, // Replace with your client's origin
-  credentials: true,            // Enable Access-Control-Allow-Credentials header if needed
+  origin: "http://localhost:3000",
+  credentials: true,
 };
 
 const app = express();
