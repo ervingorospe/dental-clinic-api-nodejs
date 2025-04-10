@@ -17,7 +17,7 @@ const storeAccessToken = (res: Response, accessToken: string) => {
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: "lax",
+    sameSite: "none",
     path: "/",
     maxAge: 15 * 60 * 1000,
   });
@@ -27,7 +27,7 @@ const storeRefreshToken = (res: Response, refreshToken: string) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'none',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
