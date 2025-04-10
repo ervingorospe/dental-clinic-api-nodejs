@@ -52,7 +52,8 @@ export const refreshToken = (token: string, res: Response) => {
 export const removeAccessToken = (res: Response) => {
   res.clearCookie("accessToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    // secure: process.env.NODE_ENV === 'production',
+    secure: false,
     sameSite: "lax",
     path: "/"
   });
@@ -61,7 +62,9 @@ export const removeAccessToken = (res: Response) => {
 export const removeRefreshToken = (res: Response) => {
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    // secure: process.env.NODE_ENV === 'production',
+    secure: false,
+    sameSite: "lax",
+    path: "/"
   });
 }
