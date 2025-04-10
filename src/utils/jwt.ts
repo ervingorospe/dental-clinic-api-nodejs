@@ -16,7 +16,7 @@ export const tokenGenerator = (user: Record<string, string | boolean | number>, 
 const storeAccessToken = (res: Response, accessToken: string) => {
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax",
     path: "/",
     maxAge: 15 * 60 * 1000,
