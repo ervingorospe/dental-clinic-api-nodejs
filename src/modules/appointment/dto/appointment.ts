@@ -27,8 +27,6 @@ export default class AppointmentDTO {
   }
 
   constructor(appointment: any) {
-    console.log(appointment);
-
     this.id = appointment.id;
     this.date = appointment.date.toISOString();
     this.startTime = appointment.startTime;
