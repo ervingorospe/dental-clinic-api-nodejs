@@ -6,7 +6,7 @@ import { IUserLogin } from "@modules/auth/interface"
 import { Users } from "@modules/user/repository"
 import { AppError } from "@utils/app-error";
 import UserDTO from "@modules/user/dto/user"
-import { removeRefreshToken }  from "@utils/jwt"
+import { removeRefreshToken, removeAccessToken }  from "@utils/jwt"
 
 export class AuthService {
   static login = async (data: IUserLogin, res: Response) => {
@@ -40,12 +40,13 @@ export class AuthService {
   }
 
   static logout = (res: Response) => {
+    removeAccessToken(res);
     removeRefreshToken(res);
     return "Logged out successfully";
   }
 
-  static refreshToken = (token: string) => {
-    return refreshToken(token);
+  static refreshToken = (token: string, res: Response) => {
+    return refreshToken(token, res);
   }
 
   private static comparePassword = async (password: string, userPassword: string) => {

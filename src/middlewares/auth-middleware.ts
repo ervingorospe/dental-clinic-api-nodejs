@@ -8,7 +8,7 @@ interface AuthRequest extends Request {
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction): void => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.cookies?.accessToken;
 
   if (!token) {
     res.status(401).json({ message: 'Unauthorized: No token provided' });
