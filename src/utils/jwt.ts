@@ -6,7 +6,7 @@ import { AppError } from "@utils/app-error";
 export const tokenGenerator = (user: Record<string, string | boolean | number>, res: Response) => {
   const accessToken = jwt.sign(user, ENV.JWT_SECRET, { expiresIn: '15m' });
   const refreshToken = jwt.sign(user, ENV.REFRESH_SECRET, { expiresIn: '7d' });
-
+  console.log(accessToken) // for testing only
   storeAccessToken(res, accessToken);
   storeRefreshToken(res, refreshToken);
 
