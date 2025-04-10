@@ -18,9 +18,8 @@ const storeAccessToken = (res: Response, accessToken: string) => {
     httpOnly: true,
     // secure: process.env.NODE_ENV === 'production',
     secure: false,
-    sameSite: "none",
+    sameSite: "lax",
     path: "/",
-    domain: "a9d38d5a386a94f0c8726958913ce978-1105281081.ap-southeast-2.elb.amazonaws.com",
     maxAge: 15 * 60 * 1000,
   });
 }
@@ -30,8 +29,8 @@ const storeRefreshToken = (res: Response, refreshToken: string) => {
     httpOnly: true,
     // secure: process.env.NODE_ENV === 'production',
     secure: false,
-    sameSite: 'none',
-    domain: "a9d38d5a386a94f0c8726958913ce978-1105281081.ap-southeast-2.elb.amazonaws.com",
+    sameSite: 'lax',
+    path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
