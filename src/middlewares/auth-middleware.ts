@@ -36,6 +36,18 @@ export const checkOwnership = (req: AuthRequest, res: Response, next: NextFuncti
   next();
 };
 
+export const validatePatientOwnership  = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const loggedInUserId = req.user?.id;
+  const { patientId } = req.body;
+
+  if (loggedInUserId === undefined || loggedInUserId !== patientId) {
+    res.status(403).json({ message: "Forbidden: You can only set appoint for yourself" });
+    return;
+  }
+
+  next();
+};
+
 // export const authorizeRole = (role: string) => {
 //   return (req: Request, res: Response, next: NextFunction) => {
 //     const user = req.user;

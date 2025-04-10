@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
 model Users {
   id          Int         @id @default(autoincrement()) 
   email       String      @unique @db.VarChar(255)
@@ -23,6 +29,8 @@ model Users {
   updatedAt   DateTime    @updatedAt
 
   userDetails UserDetails? 
+  appointmentsAsPatient  Appointments[] @relation("PatientAppointments")
+  appointmentsAsDoctor    Appointments[] @relation("DoctorAppointments")
 }
 
 model UserDetails {
@@ -36,4 +44,49 @@ model UserDetails {
 
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+}
+
+model ServiceCategory {
+  id            Int         @id @default(autoincrement())
+  name          String      @unique
+  description   String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  services    Services[]
+}
+
+model Services {
+  id              Int       @id @default(autoincrement())
+  name            String    @unique
+  description     String?
+  price           Decimal   @default(0.00)
+  categoryId      Int
+  category        ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  appointments    Appointments[]
+}
+
+model Appointments {
+  id              Int                   @id @default(autoincrement())
+  date            DateTime
+  startTime       String                @db.VarChar(255)
+  endTime         String                @db.VarChar(255)
+  status          AppointmentStatus     @default(CONFIRMED)
+  reason          String?               @db.VarChar(1000)
+  notes           String?               @db.VarChar(1000)
+  canceledAt      DateTime?
+  
+  patientId       Int
+  doctorId        Int
+  serviceId       Int
+
+  patient         Users                 @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Restrict)
+  doctor          Users                 @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: Restrict)
+  service         Services              @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 }

@@ -18,7 +18,8 @@
     "migrate:deploy": "npx prisma migrate deploy",
     "generate": "npx prisma generate",
     "reset": "npx prisma migrate reset",
-    "generate:client": "npx prisma generate"
+    "generate:client": "npx prisma generate",
+    "seed:service": "ts-node prisma/seeder/services.ts"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils",
