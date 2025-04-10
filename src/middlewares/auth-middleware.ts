@@ -36,12 +36,36 @@ export const checkOwnership = (req: AuthRequest, res: Response, next: NextFuncti
   next();
 };
 
-export const validatePatientOwnership  = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authorizeAppointmentUpdate  = (req: AuthRequest, res: Response, next: NextFunction) => {
   const loggedInUserId = req.user?.id;
-  const { patientId } = req.body;
+  const { patientId, doctorId } = req.body;
 
-  if (loggedInUserId === undefined || loggedInUserId !== patientId) {
-    res.status(403).json({ message: "Forbidden: You can only set appoint for yourself" });
+  if (loggedInUserId === undefined || (loggedInUserId !== patientId && loggedInUserId !== doctorId)) {
+    res.status(403).json({ message: "Forbidden: You can only set/update appointment for yourself" });
+    return;
+  }
+
+  next();
+};
+
+export const validateAppointmentAction = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const loggedInUserId = req.user?.id;
+  const { userId } = req.body;
+
+  if (loggedInUserId === undefined || loggedInUserId !== userId) {
+    res.status(403).json({ message: "Forbidden: You can only cancel/complete your own appointment" });
+    return;
+  }
+
+  next();
+};
+
+export const validateDoctorRole  = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const loggedInUserId = req.user?.id;
+  const loggedInUserRole = req.user?.role;
+
+  if (loggedInUserId === undefined || loggedInUserRole !== "doctor") {
+    res.status(403).json({ message: "Forbidden: Only doctors can perform this action" });
     return;
   }
 

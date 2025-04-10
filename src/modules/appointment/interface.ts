@@ -13,3 +13,13 @@ export interface IAppointment {
   doctorId: number;
   serviceId: number;
 }
+
+export interface ICancelAppointment {
+  reason?: string;
+  userId: number;
+}
+
+export interface ICompleteAppointment {
+  notes?: string;
+  userId: number;
+}

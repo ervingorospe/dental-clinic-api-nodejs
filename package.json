@@ -19,7 +19,8 @@
     "generate": "npx prisma generate",
     "reset": "npx prisma migrate reset",
     "generate:client": "npx prisma generate",
-    "seed:service": "ts-node prisma/seeder/services.ts"
+    "seed:service": "ts-node src/seeder/services.ts",
+    "seed:users": "ts-node src/seeder/users.ts"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils",

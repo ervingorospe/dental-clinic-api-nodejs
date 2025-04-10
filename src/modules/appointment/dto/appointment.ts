@@ -43,7 +43,7 @@ export default class AppointmentDTO {
     };
     this.patient = {
       firstName: appointment.patient.userDetails.firstName,
-      lastName: appointment.patient.lastName,
+      lastName: appointment.patient.userDetails.lastName,
       role: appointment.patient.role
     };
     this.doctor = {

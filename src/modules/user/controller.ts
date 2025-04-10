@@ -22,7 +22,7 @@ export class UserController {
     const data: IUserUpdate = updateUserSchema.parse(req.body);
 
     const message = await UserService.update(data, id);
-    res.status(201).json({ message });
+    res.status(200).json({ message });
   });
 
   static updatePassword = catchAsync(async (req: Request, res: Response) => {
@@ -30,6 +30,6 @@ export class UserController {
     const data: IUpdatePassword = updatePasswordSchema.parse(req.body);
 
     const message = await UserService.updatePassword(data, id);
-    res.status(201).json({ message });
+    res.status(200).json({ message });
   });
 }

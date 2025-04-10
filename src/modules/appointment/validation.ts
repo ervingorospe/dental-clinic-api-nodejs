@@ -28,3 +28,13 @@ export const createAppointmentSchema = z.object({
   }
 });
 
+export const cancelAppointmentSchema = z.object({
+  reason: z.string().optional(),
+  userId: z.number()
+})
+
+export const completeAppointmentSchema = z.object({
+  notes: z.string().optional(),
+  userId: z.number()
+})
+
