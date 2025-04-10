@@ -40,6 +40,11 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: DATABASE_URL
+            - name: CLIENT_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: port-secrets
+                  key: CLIENT_PORT
 
 ---
 apiVersion: v1
