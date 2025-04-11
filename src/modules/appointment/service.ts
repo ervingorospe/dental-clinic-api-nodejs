@@ -159,6 +159,33 @@ export class AppointmentService {
     return new AppointmentDTO(updateAppointment)
   }
 
+  static getAppointmentsByPatientIds = async (patientId: number) => {
+    const appointments =  await Appointments.findMany({
+      where: {
+        patientId
+      },
+      include: {
+        service: {
+          include: {
+            category: true
+          }
+        },
+        doctor: {
+          include: {
+            userDetails: true
+          }
+        },
+        patient: {
+          include: {
+            userDetails: true
+          }
+        }
+      }
+    })
+
+    return appointments.map((data) => new AppointmentDTO(data));
+  }
+
   static getAppointmentById = async (appointmentId: number) => {
     return await Appointments.findFirst({
       where: {

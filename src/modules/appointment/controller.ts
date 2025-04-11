@@ -3,6 +3,7 @@ import { AppointmentService } from "@modules/appointment/service";
 import { catchAsync } from "@utils/catch-async";
 import { createAppointmentSchema, cancelAppointmentSchema, completeAppointmentSchema } from "@modules/appointment/validation"
 import { IAppointment, ICancelAppointment, ICompleteAppointment } from "@modules/appointment/interface";
+import { AppointmentStatus } from "@prisma/client";
 
 export class AppointmentController {
   static create = catchAsync(async (req: Request, res: Response) => {
@@ -34,5 +35,12 @@ export class AppointmentController {
 
     const appointment = await AppointmentService.complete(data, appointmentId);
     res.status(200).json({ appointment });
+  });
+
+  static getAppointments = catchAsync(async (req: Request, res: Response) => {
+    const patientId = parseInt(req.params.id, 10);
+
+    const appointments = await AppointmentService.getAppointmentsByPatientIds(patientId);
+    res.status(200).json({ appointments });
   });
 }
