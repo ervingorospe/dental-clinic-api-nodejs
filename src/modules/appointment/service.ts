@@ -11,11 +11,11 @@ enum AppointmentStatus {
 
 export class AppointmentService {
   static create = async (data: IAppointment) => {
-    const upcomingAppointments = await AppointmentService.getUpcomingAppointmentsByPatientId(data.patientId);
+    const upcomingAppointments = await AppointmentService.getUpcomingAppointmentsByPatientId(data.patientId, data.date, data.startTime, data.endTime);
     const doctorAppointment = await AppointmentService.getDoctorAppointmentByDateStartTimeAndEndTime(data.doctorId, data.date, data.startTime, data.endTime);
 
-    if (upcomingAppointments.length > 0) {
-      throw new AppError("You already have an upcoming appointment. Please reschedule or cancel the existing one before booking a new appointment.", 409);
+    if (upcomingAppointments) {
+      throw new AppError("You have an appointment at this date and time.", 409);
     }
 
     if (doctorAppointment) {
@@ -167,17 +167,18 @@ export class AppointmentService {
     })
   }
 
-  static getUpcomingAppointmentsByPatientId = async (patientId: number) => {
-    return await Appointments.findMany({
+  static getUpcomingAppointmentsByPatientId = async (patientId: number, date: Date, startTime: string, endTime: string) => {
+    return await Appointments.findFirst({
       where: {
         patientId,
         status: AppointmentStatus.CONFIRMED,
-        date: {
-          gt: new Date()
-        }
-      },
-      orderBy: {
-        date: "asc"
+        date,
+        OR: [
+          {
+            startTime: { lt: endTime },
+            endTime: { gt: startTime }
+          }
+        ]
       }
     })
   }
