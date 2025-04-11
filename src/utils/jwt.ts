@@ -2,11 +2,12 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Response } from 'express';
 import { ENV } from '@config/env';
 import { AppError } from "@utils/app-error";
+import UserDTO from '@modules/user/dto/user';
 
-export const tokenGenerator = (user: Record<string, string | boolean | number>, res: Response) => {
+export const tokenGenerator = (user: Record<string, string | boolean | number | Date>, res: Response) => {
   const accessToken = jwt.sign(user, ENV.JWT_SECRET, { expiresIn: '15m' });
   const refreshToken = jwt.sign(user, ENV.REFRESH_SECRET, { expiresIn: '7d' });
-  console.log(accessToken) // for testing only
+
   storeAccessToken(res, accessToken);
   storeRefreshToken(res, refreshToken);
 
@@ -39,9 +40,9 @@ export const refreshToken = (token: string, res: Response) => {
   if (!token) throw new AppError("Unauthorized", 401);;
 
   try {
-    const decoded = jwt.verify(token, ENV.REFRESH_SECRET) as JwtPayload;
-    const accessToken = jwt.sign({ id: decoded.id }, ENV.JWT_SECRET, { expiresIn: '15m' });
-
+    const decoded = jwt.verify(token, ENV.REFRESH_SECRET) as UserDTO;
+    const accessToken = jwt.sign(decoded, ENV.JWT_SECRET);
+    
     storeAccessToken(res, accessToken);
     return "Authorized"
   } catch (error) {

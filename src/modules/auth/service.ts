@@ -1,10 +1,10 @@
 import { refreshToken } from './../../utils/jwt';
 import { Response } from "express";
-import bcrypt from "bcryptjs";
 import { tokenGenerator } from '@utils/jwt'
 import { IUserLogin } from "@modules/auth/interface"
 import { Users } from "@modules/user/repository"
 import { AppError } from "@utils/app-error";
+import { comparePassword } from '@utils/bycrpt'
 import UserDTO from "@modules/user/dto/user"
 import { removeRefreshToken, removeAccessToken }  from "@utils/jwt"
 
@@ -27,7 +27,7 @@ export class AuthService {
       throw new AppError("Account is not active", 403);
     }
 
-    const isPasswordValid  = await this.comparePassword(password, user.password)
+    const isPasswordValid  = await comparePassword(password, user.password)
 
     if (!isPasswordValid ) {
       throw new AppError("Invalid credentials", 401);
@@ -47,9 +47,5 @@ export class AuthService {
 
   static refreshToken = (token: string, res: Response) => {
     return refreshToken(token, res);
-  }
-
-  private static comparePassword = async (password: string, userPassword: string) => {
-    return await bcrypt.compare(password, userPassword);
   }
 }

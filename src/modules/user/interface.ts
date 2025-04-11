@@ -19,12 +19,12 @@ export interface IUser {
 }
 
 export interface IUserUpdate {
-  email: string,
   userDetails: IUserDetails
 }
 
 
 export interface IUpdatePassword {
+  currentPassword: string;
   password: string;
   confirmPassword: string;
 }

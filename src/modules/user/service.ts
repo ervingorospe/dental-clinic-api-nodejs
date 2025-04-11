@@ -1,6 +1,10 @@
 import { Users } from "@modules/user/repository"
 import { IUser, IUserUpdate, IUpdatePassword } from "@modules/user/interface"
 import bcrypt from "bcryptjs";
+import UserDTO from "@modules/user/dto/user"
+import { tokenGenerator } from '@utils/jwt'
+import { AppError } from "@utils/app-error";
+import { comparePassword, hashPassword } from '@utils/bycrpt'
 
 export class UserService {
   static test() {
@@ -25,32 +29,48 @@ export class UserService {
     return "User created"
   }
 
-  static update = async (data: IUserUpdate, id: number) => {
-    await Users.update({
+  static update = async (data: IUserUpdate, id: number, res: any) => {
+    const user = await Users.update({
       where: { id },
       data: {
-        email: data.email,
         ...(data.userDetails && {
           userDetails: {
             update: data.userDetails
           }
         })
+      },
+      include: {
+        userDetails: true,
       }
     });
 
+    const userDTO = new UserDTO(user);
+    const plainUser = userDTO.toPlainObject();
+
+    tokenGenerator(plainUser, res);
     return "User updated"
   }
 
   static updatePassword = async (data: IUpdatePassword, id: number) => {
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const user = await Users.findFirst({
+      where: { id }
+    })
 
-    await Users.update({
-      where: { id },
-      data: {
-        password: hashedPassword
+    if (user) {
+      const isPasswordValid  = await comparePassword(data.currentPassword, user.password)
+
+      if (!isPasswordValid) {
+        throw new AppError("Incorrect Current Password", 400);
       }
-    });
 
-    return "Password updated"
+      await Users.update({
+        where: { id },
+        data: {
+          password: await hashPassword(data.password)
+        }
+      });
+
+      return "Password updated"
+    }
   }
 }

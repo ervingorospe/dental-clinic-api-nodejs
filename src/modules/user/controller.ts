@@ -21,7 +21,7 @@ export class UserController {
     const id = parseInt(req.params.id, 10);
     const data: IUserUpdate = updateUserSchema.parse(req.body);
 
-    const message = await UserService.update(data, id);
+    const message = await UserService.update(data, id, res);
     res.status(200).json({ message });
   });
 
