@@ -159,11 +159,16 @@ export class AppointmentService {
     return new AppointmentDTO(updateAppointment)
   }
 
-  static getAppointmentsByPatientIds = async (patientId: number) => {
+  static getAppointmentsByPatientIds = async (patientId: number, status?: string, startDate?: string, limit?: string) => {
     const appointments =  await Appointments.findMany({
       where: {
-        patientId
+        patientId,
+        status: status as AppointmentStatus,
+        date: {
+          gte: startDate ? new Date(startDate as string) : undefined,
+        }
       },
+      take: parseInt(limit?.toString() || "10", 10),
       include: {
         service: {
           include: {
