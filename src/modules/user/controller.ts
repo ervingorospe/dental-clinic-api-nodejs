@@ -4,10 +4,16 @@ import { catchAsync } from "@utils/catch-async";
 import { registerUserSchema, updateUserSchema, updatePasswordSchema } from "@modules/user/validation"
 import { IUser, IUserUpdate, IUpdatePassword } from "@modules/user/interface";
 
+interface IUserQuery {
+  role?: string;
+  limit?: string;
+}
 export class UserController {
-  static test =  catchAsync(async (req: Request, res: Response) => {
-    const message = UserService.test();
-    res.status(200).json({ message });
+  static users =  catchAsync(async (req: Request, res: Response) => {
+    const { role, limit } : IUserQuery = req.query
+    const users = await UserService.users(role, limit);
+
+    res.status(200).json({ users });
   });
 
   static register = catchAsync(async (req: Request, res: Response) => {

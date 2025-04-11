@@ -7,8 +7,18 @@ import { AppError } from "@utils/app-error";
 import { comparePassword, hashPassword } from '@utils/bycrpt'
 
 export class UserService {
-  static test() {
-    return "Welcome Ervin";
+  static users = async (role? : string, limit? : string) => {
+    const users = await Users.findMany({
+      where: { 
+        role
+      },
+      take: parseInt(limit?.toString() || "10", 10),
+      include: {
+        userDetails: true,
+      }
+    });
+
+    return users?.map((user : any) => new UserDTO(user));
   }
 
   static register = async (data: IUser) => {

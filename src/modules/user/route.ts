@@ -6,7 +6,7 @@ const router = Router();
 
 // Route definitions
 router.post("/register", UserController.register);
-router.get("/test", authenticate, UserController.test);
+router.get("/", authenticate, UserController.users);
 router.put("/update/:id", authenticate, checkOwnership, UserController.update);
 router.put("/update/password/:id", authenticate, checkOwnership, UserController.updatePassword);
 
