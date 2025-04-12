@@ -11,4 +11,11 @@ export class ServiceController {
     const services = await DentalService.getServices(limit);
     res.status(200).json({ services });
   });
+
+  static getCategories = catchAsync(async (req: Request, res: Response) => {
+    const { limit = null } : AppointmentQueryParams = req.query ;
+
+    const categories = await DentalService.getCategories(limit);
+    res.status(200).json({ categories });
+  });
 }

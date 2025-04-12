@@ -5,5 +5,6 @@ const router = Router();
 
 // Route definitions
 router.get("/", ServiceController.getServices);
+router.get("/categories", ServiceController.getCategories);
 
 export default router;
