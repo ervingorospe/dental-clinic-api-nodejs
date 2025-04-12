@@ -1,5 +1,3 @@
-import { Appointments } from "@prisma/client"; 
-
 export default class AppointmentDTO {
   id: number;
   date: string;

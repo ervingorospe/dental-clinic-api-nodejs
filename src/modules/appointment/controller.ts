@@ -6,7 +6,7 @@ import { IAppointment, ICancelAppointment, ICompleteAppointment } from "@modules
 interface AppointmentQueryParams {
   status?: string;
   startDate?: string;
-  limit?: string;
+  limit?: string | null;
 }
 export class AppointmentController {
   static create = catchAsync(async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ export class AppointmentController {
   
   static getAppointments = catchAsync(async (req: Request, res: Response) => {
     const patientId = parseInt(req.params.id, 10);
-    const { status, startDate, limit = "10" } : AppointmentQueryParams = req.query ;
+    const { status, startDate, limit = null } : AppointmentQueryParams = req.query ;
 
     const appointments = await AppointmentService.getAppointmentsByPatientIds(patientId, status, startDate, limit);
     res.status(200).json({ appointments });

@@ -11,8 +11,8 @@ export const createAppointmentSchema = z.object({
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), { message: "Invalid date format" })
     .refine((date) => date >= tomorrow, { message: "Appointment date must be at least 1 day ahead." }),
-  startTime: z.string(),
-  endTime: z.string(),
+  startTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:MM)"),
+  endTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:MM)"),
   status:  z.nativeEnum(AppointmentStatus).default(AppointmentStatus.CONFIRMED),
   serviceId: z.number().default(1),
   patientId: z.number().int().positive(),
