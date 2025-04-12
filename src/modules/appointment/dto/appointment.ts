@@ -14,11 +14,13 @@ export default class AppointmentDTO {
     category: string;
   }
   patient: {
+    id?: string;
     firstName: string;
     lastName: string;
     role: string;
   }
   doctor: {
+    id?: string;
     firstName: string;
     lastName: string;
     role: string;
@@ -40,11 +42,13 @@ export default class AppointmentDTO {
       category: appointment.service.category.name
     };
     this.patient = {
+      id: appointment.patient.id,
       firstName: appointment.patient.userDetails.firstName,
       lastName: appointment.patient.userDetails.lastName,
       role: appointment.patient.role
     };
     this.doctor = {
+      id: appointment.doctor.id,
       firstName: appointment.doctor.userDetails.firstName,
       lastName: appointment.doctor.userDetails.lastName,
       role: appointment.doctor.role

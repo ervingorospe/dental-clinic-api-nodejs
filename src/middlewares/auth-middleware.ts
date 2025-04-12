@@ -29,7 +29,7 @@ export const checkOwnership = (req: AuthRequest, res: Response, next: NextFuncti
   const id = parseInt(req.params.id, 10);
 
   if (loggedInUserId === undefined || loggedInUserId !== id) {
-    res.status(403).json({ message: "Forbidden: You can only update your own account" });
+    res.status(403).json({ message: "Forbidden: You can only view/update your own account" });
     return;
   }
 

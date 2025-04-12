@@ -159,10 +159,53 @@ export class AppointmentService {
     return new AppointmentDTO(updateAppointment)
   }
 
-  static getAppointmentsByPatientIds = async (patientId: number, status?: string, startDate?: string, limit?: string | null) => {
+  static getAppointmentsByPatientIds = async (patientId: number, status?: string, startDate?: string, limit?: string | null, role?: string) => {
+    const where: any = {
+      status: status as AppointmentStatus,
+      date: {
+        gte: startDate ? new Date(startDate as string) : undefined,
+      },
+    };
+
+    if (role === 'patient') {
+      where.patientId = patientId;
+    } else if (role === 'doctor') {
+      where.doctorId = patientId;
+    }
+
+    const appointments =  await Appointments.findMany({
+      where,
+      take: limit != null ? parseInt(limit.toString(), 10) : undefined,
+      include: {
+        service: {
+          include: {
+            category: true
+          }
+        },
+        doctor: {
+          include: {
+            userDetails: true
+          }
+        },
+        patient: {
+          include: {
+            userDetails: true
+          }
+        }
+      },
+      orderBy: [
+        { date: 'asc' },
+        { startTime: 'asc' }
+      ]
+    })
+
+    return appointments.map((data) => new AppointmentDTO(data));
+  }
+
+  static getAppointmentsByDoctorId = async (doctorId: number, status?: string, startDate?: string, limit?: string | null) => {
     const appointments =  await Appointments.findMany({
       where: {
-        patientId,
+        doctorId,
         status: status as AppointmentStatus,
         date: {
           gte: startDate ? new Date(startDate as string) : undefined,
@@ -185,18 +228,45 @@ export class AppointmentService {
             userDetails: true
           }
         }
-      }
+      },
+      orderBy: [
+        { date: 'asc' },
+        { startTime: 'asc' }
+      ]
     })
 
     return appointments.map((data) => new AppointmentDTO(data));
   }
 
   static getAppointmentById = async (appointmentId: number) => {
-    return await Appointments.findFirst({
+    const appointment = await Appointments.findFirst({
       where: {
         id: appointmentId
-      }
+      },
+      include: {
+        service: {
+          include: {
+            category: true
+          }
+        },
+        doctor: {
+          include: {
+            userDetails: true
+          }
+        },
+        patient: {
+          include: {
+            userDetails: true
+          }
+        }
+      },
+      orderBy: [
+        { date: 'asc' },
+        { startTime: 'asc' }
+      ]
     })
+
+    return new AppointmentDTO(appointment)
   }
 
   static getUpcomingAppointmentsByPatientId = async (patientId: number, date: Date, startTime: string, endTime: string) => {

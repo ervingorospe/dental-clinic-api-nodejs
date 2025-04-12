@@ -5,7 +5,9 @@ import { authenticate, authorizeAppointmentUpdate, validateAppointmentAction, va
 const router = Router();
 
 // Route definitions
-router.get("/:id", authenticate, checkOwnership, AppointmentController.getAppointments);
+router.get("/:id", authenticate, AppointmentController.getAppointmentById);
+router.get("/list/:id", authenticate, checkOwnership, AppointmentController.getAppointments);
+router.get("/doctor/:id", authenticate, AppointmentController.getDoctorAppointments);
 router.post("/create", authenticate, authorizeAppointmentUpdate, AppointmentController.create);
 router.put("/cancel/:appointmentId", authenticate, validateAppointmentAction, AppointmentController.cancel);
 router.put("/update/:appointmentId", authenticate, authorizeAppointmentUpdate, AppointmentController.update);
