@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: dental-clinic-api
-          image: 412631849473.dkr.ecr.ap-southeast-2.amazonaws.com/dental-clinic-api:latest
+          image: 412631849473.dkr.ecr.ap-southeast-2.amazonaws.com/dental-clinic-express:latest
           ports:
             - containerPort: 8000
           env:
