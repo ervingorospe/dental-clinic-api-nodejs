@@ -9,7 +9,7 @@ import cors from 'cors';
 import { ENV } from "@config/env";
 
 const corsOptions = {
-  origin: ENV.CLIENT_PORT,
+  origin: 'https://dental-clinic-app.myprofilely.com',
   credentials: true,
 };
 
