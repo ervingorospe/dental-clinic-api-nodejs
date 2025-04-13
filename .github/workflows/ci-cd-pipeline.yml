@@ -52,7 +52,7 @@ jobs:
 
     env:
       NAMESPACE: dental-clinic-app
-      EKS_CLUSTER_NAME: dental-clinic-cluster
+      EKS_CLUSTER_NAME: dental-clinic-v1
       AWS_REGION: ap-southeast-2
 
     steps:
